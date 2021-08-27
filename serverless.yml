@@ -13,7 +13,7 @@ plugins:
 
 custom:
   client:
-    bucketName: gorr2012-autodeploy-ghg
+    bucketName: gorr2012-autodeploy
     distributionFolder: build
 
   s3LocalPath: ${self:custom.client.distributionFolder}/
@@ -41,16 +41,12 @@ resources:
           Ref: WebAppS3Bucket
         PolicyDocument:
           Statement:
-            - Sid: 'AllowCloudFrontAccessIdentity'
+            - Sid: PublicReadGetObject
               Effect: Allow
-              Action: s3:GetObject
+              Principal: "*"
+              Action:
+              - s3:GetObject
               Resource: arn:aws:s3:::${self:custom.s3BucketName}/*
-              Principal:
-                AWS:
-                  Fn::Join:
-                    - ' '
-                    - - 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity'
-                      - !Ref OriginAccessIdentity
 
     OriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity

@@ -11,8 +11,7 @@ import { formatAsPrice } from "utils/utils";
 import AddProductToCart from "components/AddProductToCart/AddProductToCart";
 import axios from 'axios';
 import API_PATHS from "constants/apiPaths";
-import { ContactlessOutlined } from '@material-ui/icons';
-// import productList from "./productList.json";
+// import { ContactlessOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -43,11 +42,19 @@ export default function Products() {
       });
   }, [])
 
+  const getOneProd = (id: string) => {
+    axios.get(`${API_PATHS.bff}/${id}`)
+    .then(res => {
+      console.log(res);
+      setProducts(res.data.products);
+    });
+  }
+
   return (
     <Grid container spacing={4}>
       {products.map((product: Product, index: number) => (
         <Grid item key={product.id} xs={12} sm={6} md={4}>
-          <Card className={classes.card}>
+          <Card className={classes.card} onClick={() => getOneProd(product.id)} >
             <CardMedia
               className={classes.cardMedia}
               image={`https://source.unsplash.com/random?sig=${index}`}
