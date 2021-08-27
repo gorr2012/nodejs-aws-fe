@@ -42,19 +42,11 @@ export default function Products() {
       });
   }, [])
 
-  const getOneProd = (id: string) => {
-    axios.get(`${API_PATHS.bff}/${id}`)
-    .then(res => {
-      console.log(res);
-      setProducts(res.data.products);
-    });
-  }
-
   return (
     <Grid container spacing={4}>
       {products.map((product: Product, index: number) => (
         <Grid item key={product.id} xs={12} sm={6} md={4}>
-          <Card className={classes.card} onClick={() => getOneProd(product.id)} >
+          <Card className={classes.card}>
             <CardMedia
               className={classes.cardMedia}
               image={`https://source.unsplash.com/random?sig=${index}`}
