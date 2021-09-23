@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import axios from 'axios';
+import API_PATHS from 'constants/apiPaths';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -19,7 +20,7 @@ export default function CSVFileImport({url, title}: CSVFileImportProps) {
   const [file, setFile] = useState<any>();
 
   const onFileChange = (e: any) => {
-    console.log(e);
+    console.log(e.target.files[0].name);
     let files = e.target.files || e.dataTransfer.files
     if (!files.length) return
     setFile(files.item(0));
@@ -30,10 +31,12 @@ export default function CSVFileImport({url, title}: CSVFileImportProps) {
   };
 
   const uploadFile = async (e: any) => {
+    console.log(e.target);
+    
       // Get the presigned URL
       const response = await axios({
         method: 'GET',
-        url,
+        url: `${API_PATHS.import}`,
         params: {
           name: encodeURIComponent(file.name)
         }
@@ -42,6 +45,9 @@ export default function CSVFileImport({url, title}: CSVFileImportProps) {
       console.log('Uploading to: ', response.data)
       const result = await fetch(response.data, {
         method: 'PUT',
+        headers: {
+          'Content-type': 'text/csv',
+        },
         body: file
       })
       console.log('Result: ', result)
