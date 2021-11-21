@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PageProductImport() {
   const classes = useStyles();
-
+  localStorage.setItem('user', 'gorr2012');
+  localStorage.setItem('pass', 'TEST_PASSWORD');
   return (
     <div className={classes.content}>
       <Box display="flex" alignItems="center">
